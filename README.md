@@ -1,6 +1,6 @@
 = abbyy
 
-Simple (incompleted) Ruby wrapper for Abbyy Cloud OCR SDK
+Simple (incomplete) Ruby wrapper for Abbyy Cloud OCR SDK
 
 == HOWTO
 
