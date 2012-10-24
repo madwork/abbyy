@@ -4,12 +4,12 @@ Simple (incomplete) Ruby wrapper for Abbyy Cloud OCR SDK
 
 ### HOWTO
 
-  pry -I lib -r abbyy
+    pry -I lib -r abbyy
 
-  client = Abbyy::Client.new(APPLICATION_ID, PASSWORD)
-  result = client.process_business_card("/home/vincent/Picture_samples/English/Business_cards/doc10002.tif", :exportFormat => 'xml', :imageSource => 'photo')
-  task = client.get_task_status(result[:id])
-  client.get task[:id]
+    client = Abbyy::Client.new(APPLICATION_ID, PASSWORD)
+    result = client.process_business_card("/home/vincent/Picture_samples/English/Business_cards/doc10002.tif", :exportFormat => 'xml', :imageSource => 'photo')
+    task = client.get_task_status(result[:id])
+    client.get task[:id]
 
 ### Contributing to abbyy
  
