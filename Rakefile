@@ -14,14 +14,15 @@ require 'rake'
 require 'jeweler'
 Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
-  gem.name = "abbyy-sdk"
-  gem.homepage = "http://github.com/madwork/abbyy-sdk"
+  gem.name = "abbyy"
+  gem.homepage = "http://github.com/madwork/abbyy"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = "A Ruby wrapper for the Abbyy Cloud OCR SDK API"
+  gem.description = "A Ruby wrapper for the Abbyy Cloud OCR SDK API."
   gem.email = "vincent.durand@madwork.org"
   gem.authors = ["Vincent Durand"]
   # dependencies defined in Gemfile
+  gem.files = Dir.glob('lib/**/*.rb')
 end
 Jeweler::RubygemsDotOrgTasks.new
 
