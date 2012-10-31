@@ -3,6 +3,7 @@ require 'rexml/document'
 require 'cgi'
 
 require 'abbyy/client'
+require 'abbyy/exceptions'
 
 module Abbyy
   extend self
