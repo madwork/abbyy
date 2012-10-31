@@ -1,7 +1,7 @@
 module Abbyy
   module API
     
-    API_METHODS = %w(process_image process_business_card get_task_status submit_image process_document).map(&:to_sym)
+    API_METHODS = %w(process_image process_business_card get_task_status submit_image process_document list_tasks).map(&:to_sym)
     
     def execute(sym, *args, &block)
       self.resource = send("run_#{sym}", *args, &block)
@@ -36,6 +36,11 @@ module Abbyy
     # http://ocrsdk.com/documentation/apireference/getTaskStatus/
     def run_get_task_status(task_id = @task[:id])
       RestClient.get("#{@url}/getTaskStatus?taskId=#{task_id}")
+    end
+    
+    # http://ocrsdk.com/documentation/apireference/listTasks/
+    def run_list_tasks
+      RestClient.get("#{@url}/listTasks")
     end
     
     # http://ocrsdk.com/documentation/apireference/processDocument/
