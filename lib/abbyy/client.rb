@@ -23,6 +23,8 @@ module Abbyy
       RestClient.get(url)
     end
     
+    alias_method :current_task, :task
+    
   end
 end
 

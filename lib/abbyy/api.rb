@@ -5,7 +5,7 @@ module Abbyy
     
     def execute(sym, *args, &block)
       self.resource = send("run_#{sym}", *args, &block)
-      @task
+      current_task
     rescue RestClient::BlockedByWindowsParentalControls => ex
       raise Abbyy::IncorrectParameters.new(parse_error(ex).message)
     rescue RestClient::RequestFailed => ex
