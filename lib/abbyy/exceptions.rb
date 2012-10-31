@@ -1,4 +1,4 @@
 module Abbyy
-  ProcessingFailed = Class.new(StandardError)
-  UploadingFailed = Class.new(StandardError)
+  IncorrectParameters = Class.new(StandardError)
+  ProcessingFailed    = Class.new(StandardError)
 end

@@ -9,6 +9,20 @@ module Abbyy
         task[:estimatedProcessingTime] = xml_data.elements["response/task"].attributes["estimatedProcessingTime"]
         task[:description] = xml_data.elements["response/task"].attributes["description"]
         task[:error] = xml_data.elements["response/task"].attributes["error"]
+        task[:credits] = xml_data.elements["response/task"].attributes["credits"]
+        task[:filesCount] = xml_data.elements["response/task"].attributes["filesCount"]
+        task[:statusChangeTime] = xml_data.elements["response/task"].attributes["statusChangeTime"]
+        task[:registrationTime] = xml_data.elements["response/task"].attributes["registrationTime"]
+      end
+    end
+    
+    AbbyyXmlError = Struct.new(:code, :message)
+    
+    def error(resource)
+      AbbyyXmlError.new.tap do |error|
+        xml_data = REXML::Document.new(resource.http_body)
+        error.code = resource.http_code
+        error.message = xml_data.elements["error/message"].text
       end
     end
   end
