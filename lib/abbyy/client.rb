@@ -1,10 +1,12 @@
 require 'abbyy/api'
 require 'abbyy/xml'
+require 'abbyy/task'
 
 module Abbyy
   class Client
     include Abbyy::API
     include Abbyy::XML
+    include Abbyy::Task
     
     attr_reader :task
     
@@ -24,7 +26,6 @@ module Abbyy
     end
     
     alias_method :current_task, :task
-    
   end
 end
 

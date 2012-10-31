@@ -1,7 +1,6 @@
 module Abbyy
   module API
-    
-    API_METHODS = %w(process_image process_business_card get_task_status submit_image process_document list_tasks).map(&:to_sym)
+    @@api_methods = %w(process_image process_business_card get_task_status submit_image process_document list_tasks).map(&:to_sym)
     
     def execute(sym, *args, &block)
       self.resource = send("run_#{sym}", *args, &block)
@@ -13,7 +12,7 @@ module Abbyy
     end
     
     def method_missing(sym, *args, &block)
-      API_METHODS.include?(sym) ? execute(sym, *args, &block) : super
+      @@api_methods.include?(sym) ? execute(sym, *args, &block) : super
     end
     
     private
