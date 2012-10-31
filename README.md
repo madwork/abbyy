@@ -1,15 +1,41 @@
 ## abbyy
 
-Simple (incomplete) Ruby wrapper for Abbyy Cloud OCR SDK
+Simple Ruby wrapper for Abbyy Cloud OCR SDK
 
 ### HOWTO
 
     pry -I lib -r abbyy
 
     client = Abbyy::Client.new(APPLICATION_ID, PASSWORD)
-    result = client.process_business_card("/home/vincent/Picture_samples/English/Business_cards/doc10002.tif", :exportFormat => 'xml', :imageSource => 'photo')
-    task = client.get_task_status(result[:id])
-    client.get task[:id]
+    client.process_business_card "/home/vincent/Picture_samples/English/Business_cards/doc10002.tif", :exportFormat => 'xml', :imageSource => 'photo'
+    client.get_task_status
+    client.get
+
+Ruby on Rails example:
+
+  config/initializers/load_abbyy.rb
+
+    require 'abbyy'
+    
+    Abbyy.configure do |config|
+      config.application_id = APPLICATION_ID
+      config.password = PASSWORD
+    end
+
+  app/workers/image_scanner.rb (Resque example)
+
+    client = Abbyy::Client.new
+    client.process_business_card attachment.full_filename, :exportFormat => 'xml', :imageSource => 'photo'
+    while %w(Queued InProgress).include?(client.task[:status])
+      sleep(client.task[:estimatedProcessingTime].to_i)
+      client.get_task_status
+    end
+    if client.task[:status] == 'Completed'
+      xml_data = REXML::Document.new(client.get)
+      ...
+    else
+      ...
+    end
 
 ### Contributing to abbyy
  
