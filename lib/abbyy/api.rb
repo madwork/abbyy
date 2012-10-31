@@ -4,12 +4,12 @@ module Abbyy
     API_METHODS = %w(process_image process_business_card get_task_status submit_image process_document).map(&:to_sym)
     
     def execute(sym, *args, &block)
-      self.task_status = send("run_#{sym}", *args, &block)
-      @status
+      self.resource = send("run_#{sym}", *args, &block)
+      @task
     rescue RestClient::BlockedByWindowsParentalControls => ex
-      raise Abbyy::IncorrectParameters.new(error(ex).message)
+      raise Abbyy::IncorrectParameters.new(parse_error(ex).message)
     rescue RestClient::RequestFailed => ex
-      raise Abbyy::ProcessingFailed.new(error(ex).message)
+      raise Abbyy::ProcessingFailed.new(parse_error(ex).message)
     end
     
     def method_missing(sym, *args, &block)
@@ -34,12 +34,12 @@ module Abbyy
     end
     
     # http://ocrsdk.com/documentation/apireference/getTaskStatus/
-    def run_get_task_status(task_id = @status[:id])
+    def run_get_task_status(task_id = @task[:id])
       RestClient.get("#{@url}/getTaskStatus?taskId=#{task_id}")
     end
     
     # http://ocrsdk.com/documentation/apireference/processDocument/
-    def run_process_document(task_id = @status[:id])
+    def run_process_document(task_id = @task[:id])
       RestClient.get("#{@url}/processDocument?taskId=#{task_id}")
     end
     

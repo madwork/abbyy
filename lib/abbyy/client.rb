@@ -6,20 +6,20 @@ module Abbyy
     include Abbyy::API
     include Abbyy::XML
     
-    attr_reader :status
+    attr_reader :task
     
     def initialize(application_id = Abbyy.application_id, password = Abbyy.password)
       @appliction_id = application_id
       @password = password
       @url = "http://#{CGI.escape(@appliction_id)}:#{CGI.escape(@password)}@cloud.ocrsdk.com"
-      @status = {}
+      @task = {}
     end
     
-    def task_status=(resource)
-      @status = task(resource)
+    def resource=(resource)
+      @task = parse_task(resource)
     end
     
-    def get(url = @status[:resultUrl])
+    def get(url = @task[:resultUrl])
       RestClient.get(url)
     end
     
