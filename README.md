@@ -18,7 +18,7 @@ Or install it yourself as:
     $ cd abbyy
     $ rake install
 
-## Usage with IRB/Pry
+### Usage with IRB/Pry
 
     pry -I lib -r abbyy
 
@@ -27,7 +27,7 @@ Or install it yourself as:
     client.get_task_status
     client.get
 
-## Usage with Ruby on Rails
+### Usage with Ruby on Rails
 
     $ touch config/initializers/load_abbyy.rb
 
@@ -38,21 +38,36 @@ Or install it yourself as:
       config.password = PASSWORD
     end
 
-## Example with Resque
+Everywhere in your rails application, you can access Abbyy without crendentials:
+
+    client = Abbyy::Client.new
+    client.run_process_image image.path
+    ...
+
+### Example with Resque
+
+Create new worker ImageScanner:
 
     $ touch app/workers/image_scanner.rb
 
-    client = Abbyy::Client.new
-    client.process_business_card attachment.full_filename, :exportFormat => 'xml', :imageSource => 'photo'
-    while %w(Queued InProgress).include?(client.task[:status])
-      sleep(client.task[:estimatedProcessingTime].to_i)
-      client.get_task_status
-    end
-    if client.task[:status] == 'Completed'
-      xml_data = REXML::Document.new(client.get)
-      ...
-    else
-      ...
+    class ImageScanner
+      @queue = :scanner
+      
+      def self.perform(attachment_id)
+        attachment = Attachment.find_by_id(attachment_id)
+        client = Abbyy::Client.new
+        client.process_business_card attachment.full_filename, :exportFormat => 'xml', :imageSource => 'photo'
+        while %w(Queued InProgress).include?(client.task[:status])
+          sleep(client.task[:estimatedProcessingTime].to_i)
+          client.get_task_status
+        end
+        if client.task[:status] == 'Completed'
+          xml_data = REXML::Document.new(client.get)
+          ...
+        else
+          ...
+        end
+      end
     end
 
 ## Contributing
