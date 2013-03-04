@@ -6,7 +6,7 @@ Simple Ruby wrapper for Abbyy Cloud OCR SDK
 
 Add this line to your application's Gemfile:
 
-    gem 'gem-skeleton', :github => 'madwork/abbyy'
+    gem 'abbyy', :github => 'madwork/abbyy'
 
 And then execute:
 
@@ -30,7 +30,7 @@ Or install it yourself as:
 ## Usage with Ruby on Rails
 
     $ touch config/initializers/load_abbyy.rb
-    
+
     require 'abbyy'
     
     Abbyy.configure do |config|
