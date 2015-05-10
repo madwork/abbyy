@@ -10,9 +10,9 @@ module Abbyy
         build_task(xml_data.elements["response/task"])
       end
     end
-    
+
     AbbyyXmlError = Struct.new(:code, :message)
-    
+
     def parse_error(resource)
       AbbyyXmlError.new.tap do |error|
         xml_data = REXML::Document.new(resource.http_body)
@@ -20,9 +20,9 @@ module Abbyy
         error.message = xml_data.elements["error/message"].text
       end
     end
-    
+
     private
-    
+
     def build_task(xml_data)
       Hash.new.tap do |task|
         task[:id] = xml_data.attributes["id"]
@@ -39,4 +39,3 @@ module Abbyy
     end
   end
 end
-
