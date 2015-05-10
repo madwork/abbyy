@@ -2,6 +2,9 @@
 
 Simple Ruby wrapper for Abbyy Cloud OCR SDK
 
+[![Build Status](https://img.shields.io/travis/madwork/abbyy.svg)](https://travis-ci.org/madwork/abbyy)
+[![Gem](https://img.shields.io/gem/v/abbyy.svg)](https://rubygems.org/gems/abbyy)
+
 ## Installation
 
 Add this line to your application's Gemfile:
