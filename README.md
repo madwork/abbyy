@@ -6,7 +6,9 @@ Simple Ruby wrapper for Abbyy Cloud OCR SDK
 
 Add this line to your application's Gemfile:
 
-    gem 'abbyy', :github => 'madwork/abbyy'
+```ruby
+gem 'abbyy'
+```
 
 And then execute:
 
@@ -14,66 +16,79 @@ And then execute:
 
 Or install it yourself as:
 
-    $ git clone git://github.com/madwork/abbyy.git
-    $ cd abbyy
-    $ rake install
+    $ gem install abbyy
 
-### Usage with IRB/Pry
+### Example
 
-    pry -I lib -r abbyy
+```ruby
+client = Abbyy::Client.new(APPLICATION_ID, PASSWORD)
+client.process_business_card "business_card.png", exportFormat: 'xml', imageSource: 'photo'
+client.get_task_status
+client.get
+```
 
-    client = Abbyy::Client.new(APPLICATION_ID, PASSWORD)
-    client.process_business_card "/home/vincent/Picture_samples/English/Business_cards/doc10002.tif", :exportFormat => 'xml', :imageSource => 'photo'
-    client.get_task_status
-    client.get
+### Example with Ruby on Rails
 
-### Usage with Ruby on Rails
+```shell
+touch config/initializers/abbyy.rb
+```
 
-    $ touch config/initializers/load_abbyy.rb
+```ruby
+require 'abbyy'
 
-    require 'abbyy'
-    
-    Abbyy.configure do |config|
-      config.application_id = APPLICATION_ID
-      config.password = PASSWORD
-    end
+Abbyy.configure do |config|
+  config.application_id = APPLICATION_ID
+  config.password = PASSWORD
+end
+```
 
 Everywhere in your rails application, you can access Abbyy without crendentials:
 
-    client = Abbyy::Client.new
-    client.run_process_image image.path
-    ...
+```ruby
+client = Abbyy::Client.new
+client.process_image "image.png"
+```
 
 ### Example with Resque
 
 Create new worker ImageScanner:
 
-    $ touch app/workers/image_scanner.rb
+```shell
+touch app/workers/image_scanner.rb
+```
 
-    class ImageScanner
-      @queue = :scanner
-      
-      def self.perform(attachment_id)
-        attachment = Attachment.find_by_id(attachment_id)
-        client = Abbyy::Client.new
-        client.process_business_card attachment.full_filename, :exportFormat => 'xml', :imageSource => 'photo'
-        while %w(Queued InProgress).include?(client.task[:status])
-          sleep(client.task[:estimatedProcessingTime].to_i)
-          client.get_task_status
-        end
-        if client.task[:status] == 'Completed'
-          xml_data = REXML::Document.new(client.get)
-          ...
-        else
-          ...
-        end
-      end
+```ruby
+class ImageScanner
+  @queue = :scanner
+
+  def self.perform(attachment_id)
+    attachment = Attachment.find_by_id(attachment_id)
+    client = Abbyy::Client.new
+    client.process_business_card attachment.full_filename, exportFormat: 'xml', imageSource: 'photo'
+    while %w(Queued InProgress).include?(client.task[:status])
+      sleep(client.task[:estimatedProcessingTime].to_i)
+      client.get_task_status
     end
+    if client.task[:status] == 'Completed'
+      xml_data = REXML::Document.new(client.get)
+      ...
+    else
+      ...
+    end
+  end
+end
+```
+
+## Development
+
+After checking out the repo, run `bin/setup` to install dependencies. Then, run `bin/console` for an interactive prompt that will allow you to experiment.
+
+To install this gem onto your local machine, run `bundle exec rake install`.
 
 ## Contributing
 
-1. Fork it
+1. Fork it ( https://github.com/madwork/abbyy/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+5. Create a new Pull Request
