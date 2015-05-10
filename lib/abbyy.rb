@@ -8,11 +8,9 @@ require 'abbyy/exceptions'
 
 module Abbyy
   extend self
-  
+
   attr_accessor :application_id, :password
-  
-  # config/initializers/load_abbyy.rb (for rails)
-  #
+
   # Abbyy.configure do |config|
   #   config.application_id = 'application_id'
   #   config.password = 'password'
