@@ -2,6 +2,7 @@ require 'rest-client'
 require 'rexml/document'
 require 'cgi'
 
+require 'abbyy/version'
 require 'abbyy/client'
 require 'abbyy/exceptions'
 
