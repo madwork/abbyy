@@ -8,19 +8,9 @@ Gem::Specification.new do |spec|
   spec.version       = Abbyy::VERSION
   spec.authors       = ["Vincent Durand"]
   spec.email         = ["vincent.durand@madwork.org"]
-
   spec.summary       = %q{A Ruby wrapper for the Abbyy Cloud OCR SDK API.}
   spec.homepage      = "https://github.com/madwork/abbyy"
   spec.license       = "MIT"
-
-  # Prevent pushing this gem to RubyGems.org by setting 'allowed_push_host', or
-  # delete this section to allow pushing this gem to any host.
-  if spec.respond_to?(:metadata)
-    spec.metadata['allowed_push_host'] = "https://rubygems.org/"
-  else
-    raise "RubyGems 2.0 or newer is required to protect against public gem pushes."
-  end
-
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.bindir        = "exe"
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
