@@ -4,28 +4,44 @@ require 'abbyy/task'
 
 module Abbyy
   class Client
-    include Abbyy::API
     include Abbyy::XML
     include Abbyy::Task
-    
-    attr_reader :task
-    
+
+    attr_reader :task, :url
+
     def initialize(application_id = Abbyy.application_id, password = Abbyy.password)
       @appliction_id = application_id
       @password = password
       @url = "http://#{CGI.escape(@appliction_id)}:#{CGI.escape(@password)}@cloud.ocrsdk.com"
       @task = {}
     end
-    
+
+    alias_method :current_task, :task
+
+    # Retrieve the result of processing task
+    #
+    # @param [String] the url of the task result
+    # @return [String] the xml representation
+    def get(url = task[:resultUrl])
+      RestClient.get(url)
+    end
+
+    # http://ocrsdk.com/documentation/apireference/listTasks/
+    # @return [Array] the list of tasks created
+    def list_tasks
+      parse_task get("#{url}/listTasks")
+    end
+
+    def method_missing(meth, *args, &block)
+      api = API.new self
+      self.resource = api.execute meth, *args, &block
+      current_task
+    end
+
+    private
+
     def resource=(resource)
       @task = parse_task(resource)
     end
-    
-    def get(url = @task[:resultUrl])
-      RestClient.get(url)
-    end
-    
-    alias_method :current_task, :task
   end
 end
-
