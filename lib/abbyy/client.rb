@@ -7,13 +7,24 @@ module Abbyy
     include Abbyy::XML
     include Abbyy::Task
 
-    attr_reader :task, :url
+    API_ENDPOINT = "cloud.ocrsdk.com"
+
+    attr_reader :task
 
     def initialize(application_id = Abbyy.application_id, password = Abbyy.password)
       @appliction_id = application_id
       @password = password
-      @url = "http://#{CGI.escape(@appliction_id)}:#{CGI.escape(@password)}@cloud.ocrsdk.com"
       @task = {}
+    end
+
+    # @return [String] the api url with credentials
+    def url
+      @url ||= begin
+        uri = URI::HTTP.build host: API_ENDPOINT
+        uri.user = CGI.escape @appliction_id.to_s
+        uri.password = CGI.escape @password.to_s if uri.user
+        uri.to_s
+      end
     end
 
     alias_method :current_task, :task
