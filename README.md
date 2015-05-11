@@ -32,9 +32,7 @@ client.get
 
 ### Example with Ruby on Rails
 
-```shell
-touch config/initializers/abbyy.rb
-```
+    $ touch config/initializers/abbyy.rb
 
 ```ruby
 require 'abbyy'
@@ -56,9 +54,7 @@ client.process_image "image.png"
 
 Create new worker ImageScanner:
 
-```shell
-touch app/workers/image_scanner.rb
-```
+    $ touch app/workers/image_scanner.rb
 
 ```ruby
 class ImageScanner
