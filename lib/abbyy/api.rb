@@ -42,5 +42,10 @@ module Abbyy
     def process_fields(file_path, task_id = task[:id], options = {})
       RestClient.post("#{url}/processFields?taskId=#{task_id}", options.merge(:upload => { :file => File.new(file_path, 'r') }))
     end
+
+    # http://ocrsdk.com/documentation/apireference/processMRZ/
+    def process_mrz(image_path, options = {})
+      RestClient.post("#{url}/processMRZ", options.merge(:upload => { :file => File.new(image_path, 'r') }))
+    end
   end
 end
